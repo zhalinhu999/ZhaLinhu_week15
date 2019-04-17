@@ -1,8 +1,13 @@
 package cn.edu.swufe.zhalinhu;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,21 +18,59 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Rateconverter extends AppCompatActivity {
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+public class Rateconverter extends AppCompatActivity implements Runnable{
     EditText rmb;
     TextView showrlt ;
+    Handler handler;
+
+    private final String TAG = "Rate";
     private float dollar_rate = 6.7f;
     private float pound_rate = 8.774f;
     private float yen_rate = 0.8559f;
     private float hk_rate = 0.06014f;
 
 
+    @SuppressLint("HandlerLeak")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rateconverter);
         rmb = findViewById(R.id.rmb);
         showrlt = findViewById(R.id.showrlt);
+
+        //获取sp里面的数据
+        SharedPreferences sharedPreferences = getSharedPreferences("myrate",Activity.MODE_PRIVATE);
+        dollar_rate = sharedPreferences.getFloat("dollar_rate",0.0f);
+        pound_rate = sharedPreferences.getFloat("pound_rate",0.0f);
+        yen_rate = sharedPreferences.getFloat("yen_rate",0.0f);
+        hk_rate = sharedPreferences.getFloat("hk_rate",0.0f);
+
+        Log.i("TAG","onCreate:sp dollerRate=" + dollar_rate);
+        Log.i("TAG","onCreate:sp poundRate=" + pound_rate);
+        Log.i("TAG","onCreate:sp yenRate=" + yen_rate);
+        Log.i("TAG","onCreate:sp hkRate=" + hk_rate);
+
+        //开启子线程
+        Thread t =  new Thread(this);
+        t.start();
+
+        handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg){
+                if(msg.what==5){
+                    String str  = (String)msg.obj;
+                    Log.i(TAG,"handleMessage:getMessage msg = "+str);
+                }
+                super.handleMessage(msg);
+            }
+        };
     }
     public void OnClick(View btn){
         String stn = rmb.getText().toString();
@@ -108,8 +151,65 @@ public class Rateconverter extends AppCompatActivity {
             Log.i("TAG","onActivityResult: pound_rate="+pound_rate);
             Log.i("TAG","onActivityResult: yen_rate="+yen_rate);
             Log.i("TAG","onActivityResult: hk_rate="+hk_rate);
+
+            //将新设置的汇率写到sp里面
+            SharedPreferences sharedPreferences = getSharedPreferences("myrate",Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putFloat("dollar_rate",dollar_rate);
+            editor.putFloat("pound_rate",pound_rate);
+            editor.putFloat("yen_rate",yen_rate);
+            editor.putFloat("hk_rate",hk_rate);
+            editor.commit();
+            Log.i("TAG","onActivityResult: 数据已经保存到sharedPreferences");
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void run() {
+        Log.i(TAG,"run().....");
+        for (int i = 1;i<=3;i++){
+            Log.i(TAG ,"run:i = "+i);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //获取Msg对象，用于返回主线程
+        Message msg = handler.obtainMessage(5);
+        //msg.what = 5;
+        msg.obj = "hello from run()";
+        handler.sendMessage(msg);
+
+        //获取网络数据
+        URL url = null;
+        try {
+            url = new URL("http://www.usd-cny.com/icbc.htm");
+            HttpURLConnection http = (HttpURLConnection) url.openConnection();
+            InputStream in = http.getInputStream();
+
+            String html = inputStream2String(in);
+            Log.i(TAG,"run:html="+html);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+    private String inputStream2String(InputStream inputStream) throws IOException {
+        final int bufferSize = 1024;
+        final char[]bufer = new char[bufferSize];
+        final StringBuilder out  = new StringBuilder();
+        Reader in = new InputStreamReader(inputStream,"gb2312");
+        for (;;){
+            int rsz = in.read(bufer,0,bufer.length);
+            if(rsz<0)
+                break;
+            out.append(bufer,0,rsz);
+        }
+        return out.toString();
     }
 }
 
