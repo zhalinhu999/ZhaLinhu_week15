@@ -18,12 +18,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class Rateconverter extends AppCompatActivity implements Runnable{
     EditText rmb;
@@ -65,8 +68,19 @@ public class Rateconverter extends AppCompatActivity implements Runnable{
             @Override
             public void handleMessage(Message msg){
                 if(msg.what==5){
-                    String str  = (String)msg.obj;
-                    Log.i(TAG,"handleMessage:getMessage msg = "+str);
+                    //String str  = (String)msg.obj;
+                    Bundle bd1 = (Bundle) msg.obj;
+                    dollar_rate = bd1.getFloat("dollar_rate");
+                    pound_rate = bd1.getFloat("pound_rate");
+                    yen_rate = bd1.getFloat("yen_rate");
+                    hk_rate = bd1.getFloat("hk_rate");
+
+                    Log.i(TAG,"handleMessage:dollar_rate "+dollar_rate);
+                    Log.i(TAG,"handleMessage:pound_rate "+pound_rate);
+                    Log.i(TAG,"handleMessage:yen_rate "+yen_rate);
+                    Log.i(TAG,"handleMessage:hk_rate "+hk_rate);
+
+                    Toast.makeText(Rateconverter.this,"汇率已更新",Toast.LENGTH_SHORT).show();
                 }
                 super.handleMessage(msg);
             }
@@ -171,31 +185,71 @@ public class Rateconverter extends AppCompatActivity implements Runnable{
         for (int i = 1;i<=3;i++){
             Log.i(TAG ,"run:i = "+i);
             try {
-                Thread.sleep(2000);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
 
-        //获取Msg对象，用于返回主线程
-        Message msg = handler.obtainMessage(5);
-        //msg.what = 5;
-        msg.obj = "hello from run()";
-        handler.sendMessage(msg);
+        //用户保存获取的汇率
+        Bundle bundle = new  Bundle();
 
         //获取网络数据
-        URL url = null;
-        try {
-            url = new URL("http://www.usd-cny.com/icbc.htm");
-            HttpURLConnection http = (HttpURLConnection) url.openConnection();
-            InputStream in = http.getInputStream();
+//        URL url = null;
+//        try {
+//            url = new URL("http://www.usd-cny.com/bankofchina.htm");
+//            HttpURLConnection http = (HttpURLConnection) url.openConnection();
+//            InputStream in = http.getInputStream();
+//
+//            String html = inputStream2String(in);
+//            Log.i(TAG,"run:html="+html);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
-            String html = inputStream2String(in);
-            Log.i(TAG,"run:html="+html);
+        Document doc = null;
+        try {
+            doc = Jsoup.connect("http://www.usd-cny.com/bankofchina.htm").get();
+            Log.i(TAG,"run"+doc.title());
+            Elements tables = doc.getElementsByTag("table");
+
+            Element table6 = tables.get(0);
+            //Log.i(TAG,"run"+tables);
+            //获取td中的数据
+            Elements tds = table6.getElementsByTag("td");
+            for(int i=0;i<tds.size();i+=6){
+                Element td1 = tds.get(i);
+                Element td2 = tds.get(i+5);
+                Log.i(TAG,"run:"+ td1.text() + "==>" + td2.text());
+
+                String str1 = td1.text();
+                String val = td2.text();
+
+                if("美元".equals(str1)){
+                    bundle.putFloat("dollar_rate",100f/Float.parseFloat(val));
+                }else if("英镑".equals(str1)){
+                    bundle.putFloat("pound_rate",100f/Float.parseFloat(val));
+                }else if("日元".equals(str1)){
+                    bundle.putFloat("yen_rate",100f/Float.parseFloat(val));
+                }else if("港币".equals(str1)){
+                    bundle.putFloat("hk_rate",100f/Float.parseFloat(val));
+                }
+            }
+
+
+
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        //获取Msg对象，用于返回主线程
+        Message msg = handler.obtainMessage(5);
+        //msg.what = 5;
+        //msg.obj = "hello from run()";
+        msg.obj = bundle;
+        handler.sendMessage(msg);
 
     }
     private String inputStream2String(InputStream inputStream) throws IOException {

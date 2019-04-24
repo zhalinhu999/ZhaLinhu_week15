@@ -7,8 +7,11 @@ import android.view.View;
 import android.widget.TextView;
 
 public class Score extends Activity {
+    private final String TAG = "score";
     TextView score_A;
     TextView score_B;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +20,30 @@ public class Score extends Activity {
 
         score_A = (TextView) findViewById(R.id.score_A);
         score_B = (TextView) findViewById(R.id.score_B);
+    }
+
+    @Override
+    //生命周期函数中暂时储存参数
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        String scorea = ((TextView) findViewById(R.id.score_A)).getText().toString();
+        String scoreb = ((TextView) findViewById(R.id.score_B)).getText().toString();
+
+        Log.i(TAG,"onSave....");
+        outState.putString("teama_score",scorea);
+        outState.putString("teamb_score",scoreb);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        String scorea = savedInstanceState.getString("teama_score");
+        String scoreb = savedInstanceState.getString("teamb_score");
+
+        Log.i(TAG,"onRestore...");
+        ((TextView) findViewById(R.id.score_A)).setText(scorea);
+        ((TextView) findViewById(R.id.score_B)).setText(scoreb);
+
     }
 
     public void btnAdd1(View btn){
