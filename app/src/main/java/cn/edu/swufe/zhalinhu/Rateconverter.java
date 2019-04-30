@@ -27,6 +27,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Rateconverter extends AppCompatActivity implements Runnable{
     EditText rmb;
@@ -38,6 +41,8 @@ public class Rateconverter extends AppCompatActivity implements Runnable{
     private float pound_rate = 8.774f;
     private float yen_rate = 0.8559f;
     private float hk_rate = 0.06014f;
+
+    private String updateDate = "";
 
 
     @SuppressLint("HandlerLeak")
@@ -54,15 +59,34 @@ public class Rateconverter extends AppCompatActivity implements Runnable{
         pound_rate = sharedPreferences.getFloat("pound_rate",0.0f);
         yen_rate = sharedPreferences.getFloat("yen_rate",0.0f);
         hk_rate = sharedPreferences.getFloat("hk_rate",0.0f);
+        updateDate = sharedPreferences.getString("updateDate", "");
+
+        //获得当前系统时间
+        Date today = Calendar.getInstance().getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        final String todayStr = sdf.format(today);
+
 
         Log.i("TAG","onCreate:sp dollerRate=" + dollar_rate);
         Log.i("TAG","onCreate:sp poundRate=" + pound_rate);
         Log.i("TAG","onCreate:sp yenRate=" + yen_rate);
         Log.i("TAG","onCreate:sp hkRate=" + hk_rate);
+        Log.i("TAG","onCreate:sp updateDate=" + updateDate);
+        Log.i("TAG","onCreate:sp todayStr=" + todayStr);
+
+        //判断时间
+        if(!todayStr.equals(updateDate)){
+            Log.i("TAG","onCreate :需要更新");
+            Thread t = new Thread(this);
+            t.start();
+        }else {
+            Log.i("TAG","onCreate :不需要更新");
+        }
+
 
         //开启子线程
-        Thread t =  new Thread(this);
-        t.start();
+//        Thread t =  new Thread(this);
+//        t.start();
 
         handler = new Handler(){
             @Override
@@ -79,6 +103,16 @@ public class Rateconverter extends AppCompatActivity implements Runnable{
                     Log.i(TAG,"handleMessage:pound_rate "+pound_rate);
                     Log.i(TAG,"handleMessage:yen_rate "+yen_rate);
                     Log.i(TAG,"handleMessage:hk_rate "+hk_rate);
+
+                    //保存更新的日期
+                    SharedPreferences sharedPreferences = getSharedPreferences("myrate",Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putFloat("dollar_rate",dollar_rate);
+                    editor.putFloat("pound_rate",pound_rate);
+                    editor.putFloat("yen_rate",yen_rate);
+                    editor.putFloat("hk_rate",hk_rate);
+                    editor.putString("update_date",todayStr);
+                    editor.apply();
 
                     Toast.makeText(Rateconverter.this,"汇率已更新",Toast.LENGTH_SHORT).show();
                 }
@@ -148,7 +182,12 @@ public class Rateconverter extends AppCompatActivity implements Runnable{
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.menu_set){
             openConfig();
+        }else if(item.getItemId()==R.id.open_list){
+            //打开列表
+            Intent list = new Intent(this,RateListActivity.class);
+            startActivity(list );
         }
+
         return super.onOptionsItemSelected(item);
     }
 

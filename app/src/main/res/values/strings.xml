@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My App</string>
+    <string name="app_name">Zha Linhu</string>
     <string name="hello">Hello</string>
     <string name="date">Please import date</string>
     <string name="celsius">Please enter Celsius</string>
@@ -28,6 +28,8 @@
     <string name="btn_save_lable">save</string>
     <string name="menu_setting_label">setting</string>
     <string name="btn_calll_lable">call</string>
+    <string name="lable_open_list">OpenList</string>
+    <string name="lable_mylist">mylist</string>
 
 
 </resources>

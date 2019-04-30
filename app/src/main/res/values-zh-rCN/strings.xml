@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">My App</string>
+    <string name="app_name">查</string>
     <string name="hello">你好</string>
     <string name="date">请输入数据</string>
     <string name="celsius">请输入摄氏度</string>
@@ -29,5 +29,7 @@
     <string name="btn_save_lable">save</string>
     <string name="menu_setting_label">setting</string>
     <string name="btn_calll_lable">call</string>
+    <string name="lable_open_list">OpenList</string>
+    <string name="lable_mylist">mylist</string>
 
 </resources>

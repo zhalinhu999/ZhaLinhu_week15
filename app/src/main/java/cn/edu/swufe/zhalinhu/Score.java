@@ -46,6 +46,8 @@ public class Score extends Activity {
 
     }
 
+
+
     public void btnAdd1(View btn){
         if(btn.getId()==R.id.btn_score_1_A){
             showScore_A(1);
