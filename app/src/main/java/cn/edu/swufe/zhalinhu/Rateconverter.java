@@ -76,17 +76,12 @@ public class Rateconverter extends AppCompatActivity implements Runnable{
 
         //判断时间
         if(!todayStr.equals(updateDate)){
-            Log.i("TAG","onCreate :需要更新");
+            Log.i("TAG","onCreate :需要更新");//开启子线程
             Thread t = new Thread(this);
             t.start();
         }else {
             Log.i("TAG","onCreate :不需要更新");
         }
-
-
-        //开启子线程
-//        Thread t =  new Thread(this);
-//        t.start();
 
         handler = new Handler(){
             @Override
@@ -107,12 +102,13 @@ public class Rateconverter extends AppCompatActivity implements Runnable{
                     //保存更新的日期
                     SharedPreferences sharedPreferences = getSharedPreferences("myrate",Activity.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
+
                     editor.putFloat("dollar_rate",dollar_rate);
                     editor.putFloat("pound_rate",pound_rate);
                     editor.putFloat("yen_rate",yen_rate);
                     editor.putFloat("hk_rate",hk_rate);
                     editor.putString("update_date",todayStr);
-                    editor.apply();
+                    editor.commit();
 
                     Toast.makeText(Rateconverter.this,"汇率已更新",Toast.LENGTH_SHORT).show();
                 }
