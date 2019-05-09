@@ -180,7 +180,7 @@ public class Rateconverter extends AppCompatActivity implements Runnable{
             openConfig();
         }else if(item.getItemId()==R.id.open_list){
             //打开列表
-            Intent list = new Intent(this,RateListActivity.class);
+            Intent list = new Intent(this,MyList2Activity.class);
             startActivity(list );
         }
 

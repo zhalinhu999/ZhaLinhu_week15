@@ -32,7 +32,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".RateListActivity" />
-        <activity android:name=".MyListActivity"></activity>
+        <activity android:name=".MyListActivity" />
+        <activity android:name=".ui.main.MyList2Activity" />
+        <activity android:name=".MyList2Activity" />
+        <activity android:name=".RateCalcActivity"></activity>
     </application>
 
 </manifest>

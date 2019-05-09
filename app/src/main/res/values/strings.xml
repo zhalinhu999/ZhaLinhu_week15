@@ -21,15 +21,16 @@
     <string name="btn_Pound_label">Pound</string>
     <string name="btn_Yen_label">Yen</string>
     <string name="btn_HK_label">HK</string>
-    <string name="rmb_hint">Input RMB</string>
-    <string name="rmb_rlt">0</string>
+    <string name="rmb_hint">Input Foreign Currency</string>
+
+    <string name="rmb_0">0</string>
+    <string name="rmb">input RMB</string>
 
     <string name="btn_config">open score page</string>
     <string name="btn_save_lable">save</string>
     <string name="menu_setting_label">setting</string>
     <string name="btn_calll_lable">call</string>
     <string name="lable_open_list">OpenList</string>
-
 
 
 </resources>

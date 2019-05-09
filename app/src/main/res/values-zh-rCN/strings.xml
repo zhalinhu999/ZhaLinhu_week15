@@ -22,8 +22,10 @@
     <string name="btn_Pound_label">英镑</string>
     <string name="btn_Yen_label">日元</string>
     <string name="btn_HK_label">港币</string>
-    <string name="rmb_hint">请输入人民币金额</string>
-    <string name="rmb_rlt">0</string>
+    <string name="rmb_hint">请输入其他外币金额</string>
+
+    <string name="rmb_0">0</string>
+    <string name="rmb">请输入人民币</string>
 
     <string name="btn_config">打开积分页面</string>
     <string name="btn_save_lable">save</string>
