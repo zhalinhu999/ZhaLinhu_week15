@@ -116,6 +116,7 @@ public class Rateconverter extends AppCompatActivity implements Runnable{
             }
         };
     }
+
     public void OnClick(View btn){
         String stn = rmb.getText().toString();
         float rmb = 0;
@@ -138,6 +139,7 @@ public class Rateconverter extends AppCompatActivity implements Runnable{
             showrlt.setText(String.format("%.2f",r));
         }
     }
+
     public void openAnother(View btn){
         Intent Score = new Intent(this,Score.class);
         //Intent Web = new Intent(Intent.ACTION_VIEW,Uri.parse("http://www.baidu.com"));
@@ -154,27 +156,20 @@ public class Rateconverter extends AppCompatActivity implements Runnable{
 
     private void openConfig() {
         Intent Config = new Intent(this,Config.class);
-
         Config.putExtra("dollar_rate_key",dollar_rate);
         Config.putExtra("pound_rate_key",pound_rate);
         Config.putExtra("yen_rate_key",yen_rate);
         Config.putExtra("hk_rate_key",hk_rate);
-
-        Log.i("TAG","openAnother : dollar_rate_key="+dollar_rate);
-        Log.i("TAG","openAnother : pound_rate_key="+pound_rate);
-        Log.i("TAG","openAnother : yen_rate_key="+yen_rate);
-        Log.i("TAG","openAnother : hk_rate_key="+hk_rate);
-
         startActivityForResult(Config,1);
     }
 
-    @Override
+    @Override //创建菜单
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.rate,menu);
         return true;
     }
 
-    @Override
+    @Override //菜单选项
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.menu_set){
             openConfig();
@@ -198,7 +193,7 @@ public class Rateconverter extends AppCompatActivity implements Runnable{
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
+    @Override  //'保存汇率
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == 1&&resultCode == 2){
             Bundle bundle = data.getExtras();
@@ -225,9 +220,10 @@ public class Rateconverter extends AppCompatActivity implements Runnable{
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    @Override
+    @Override //子线程方法
     public void run() {
-        Log.i(TAG,"run().....");
+
+        Log.i(TAG,"run()....."); //子线程开启等待
         for (int i = 1;i<=3;i++){
             Log.i(TAG ,"run:i = "+i);
             try {
@@ -237,8 +233,7 @@ public class Rateconverter extends AppCompatActivity implements Runnable{
             }
         }
 
-        //用户保存获取的汇率
-        Bundle bundle = new  Bundle();
+
 
         //获取网络数据
 //        URL url = null;
@@ -254,12 +249,15 @@ public class Rateconverter extends AppCompatActivity implements Runnable{
 //            e.printStackTrace();
 //        }
 
+        //用户保存获取的汇率
+        Bundle bundle = new  Bundle();
+
         Document doc = null;
         try {
             doc = Jsoup.connect("http://www.usd-cny.com/bankofchina.htm").get();
             Log.i(TAG,"run"+doc.title());
-            Elements tables = doc.getElementsByTag("table");
 
+            Elements tables = doc.getElementsByTag("table");
             Element table6 = tables.get(0);
             //Log.i(TAG,"run"+tables);
             //获取td中的数据
@@ -268,10 +266,8 @@ public class Rateconverter extends AppCompatActivity implements Runnable{
                 Element td1 = tds.get(i);
                 Element td2 = tds.get(i+5);
                 Log.i(TAG,"run:"+ td1.text() + "==>" + td2.text());
-
                 String str1 = td1.text();
                 String val = td2.text();
-
                 if("美元".equals(str1)){
                     bundle.putFloat("dollar_rate",100f/Float.parseFloat(val));
                 }else if("英镑".equals(str1)){
@@ -282,10 +278,6 @@ public class Rateconverter extends AppCompatActivity implements Runnable{
                     bundle.putFloat("hk_rate",100f/Float.parseFloat(val));
                 }
             }
-
-
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }

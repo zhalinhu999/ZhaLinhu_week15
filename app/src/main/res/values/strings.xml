@@ -1,36 +1,41 @@
 <resources>
-    <string name="app_name">Zha Linhu</string>
-    <string name="hello">Hello</string>
-    <string name="date">Please import date</string>
-    <string name="celsius">Please enter Celsius</string>
-    <string name="fahrenheit">Convert to Fahrenheit</string>
-    <string name="result">The result:</string>
-    <string name="teamName_A">teamA</string>
-    <string name="teamName_B">teamB</string>
+    <string name="app_name">查</string>
+    <string name="hello">你好</string>
+    <string name="date">请输入数据</string>
+    <string name="celsius">请输入摄氏度</string>
+    <string name="fahrenheit">转换为华氏温度</string>
+    <string name="result">结果为：</string>
+    <string name="teamName_A">A队</string>
+    <string name="teamName_B">B队</string>
     <string name="score">0</string>
-    <string name="add_score3">+3 POINTS</string>
-    <string name="add_score2">+2 POINTS</string>
-    <string name="add_score1">+1 POINT</string>
-    <string name="reset">RESET</string>
-    <!--<string name="rate_dollar">DOLLAR</string>-->
-    <string name="rate_euro">EURO</string>
-    <string name="rate_won">WON</string>
-    <!--<string name="rmb_hint">Input RMB</string>-->
+    <string name="add_score3">+3 分</string>
+    <string name="add_score2">+2 分</string>
+    <string name="add_score1">+1 分</string>
+    <string name="reset">重置</string>
+    <!--<string name="rate_dollar">美元</string>-->
+    <string name="rate_euro">欧元</string>
+    <string name="rate_won">韩元</string>
+    <!--<string name="rmb_hint">请输入人民币金额</string>-->
 
-    <string name="btn_Dollar_label">Dollar</string>
-    <string name="btn_Pound_label">Pound</string>
-    <string name="btn_Yen_label">Yen</string>
-    <string name="btn_HK_label">HK</string>
-    <string name="rmb_hint">Input Foreign Currency</string>
+    <string name="btn_Dollar_label">美元</string>
+    <string name="btn_Pound_label">英镑</string>
+    <string name="btn_Yen_label">日元</string>
+    <string name="btn_HK_label">港币</string>
+    <string name="rmb_hint">请输入其他外币金额</string>
 
     <string name="rmb_0">0</string>
-    <string name="rmb">input RMB</string>
+    <string name="rmb">请输入人民币</string>
 
-    <string name="btn_config">open score page</string>
+    <string name="btn_config">篮球计分功能</string>
     <string name="btn_save_lable">save</string>
     <string name="menu_setting_label">setting</string>
-    <string name="btn_calll_lable">call</string>
+    <string name="btn_calll_lable">打电话功能</string>
     <string name="lable_open_list">OpenList</string>
+
+    <string name="rdo_home_lable">首页</string>
+    <string name="rdo_func_lable">功能</string>
+    <string name="rdo_setting_lable">设置</string>
+    <string name="jumpfunc_label">跳转功能</string>
 
 
 </resources>

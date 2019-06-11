@@ -15,6 +15,7 @@ public class RateCalcActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rate_calc);
+
         String title = getIntent().getStringExtra("title");
         rate = getIntent().getFloatExtra("rate",0f);
 

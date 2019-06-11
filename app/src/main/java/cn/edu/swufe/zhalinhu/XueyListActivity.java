@@ -22,9 +22,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MyList2Activity extends ListActivity implements Runnable,AdapterView.OnItemClickListener ,AdapterView.OnItemLongClickListener{
+public class XueyListActivity extends ListActivity implements Runnable,AdapterView.OnItemClickListener ,AdapterView.OnItemLongClickListener{
 
-    private String TAG ="mylist2";
+    private String TAG ="mylist3";
 
     Handler handler;
     private List<HashMap<String,String>>listItems;//存放文字、图片信息
@@ -47,7 +47,7 @@ public class MyList2Activity extends ListActivity implements Runnable,AdapterVie
                 if(msg.what==7){
                     listItems  = (List<HashMap<String,String>>) msg.obj;
 
-                    listItemAdapter = new SimpleAdapter(MyList2Activity.this,listItems,
+                    listItemAdapter = new SimpleAdapter(XueyListActivity.this,listItems,
                             R.layout.list_item,
                             new String[]{"ItemTitle","ItemDetail"},
                             new int[]{R.id.itemTitle,R.id.itemDetail}
@@ -84,27 +84,30 @@ public class MyList2Activity extends ListActivity implements Runnable,AdapterVie
         //获取网络数据,带回到list的主线程
         List<HashMap<String,String>> retList = new ArrayList<HashMap<String,String>>();
         Document doc = null;
-        try {
-            doc = Jsoup.connect("http://www.usd-cny.com/bankofchina.htm").get();
-            Log.i(TAG,"run"+doc.title());
-            Elements tables = doc.getElementsByTag("table");
 
-            Element table6 = tables.get(0);
+        try {
+            doc = Jsoup.connect("https://www.swufe.edu.cn/2235.html").get();
+            Log.i(TAG,"run"+doc.title());
+
+            Elements tables = doc.getElementsByTag("table");
+            Element table6 = tables.get(3);
             //Log.i(TAG,"run"+tables);
             //获取td中的数据
+
             Elements tds = table6.getElementsByTag("td");
-            for(int i=0;i<tds.size();i+=6){
-                Element td1 = tds.get(i);
-                Element td2 = tds.get(i+5);
-                Log.i(TAG,"run:"+ td1.text() + "==>" + td2.text());
+            Elements links = table6.getElementsByTag("a");
 
-                String str1 = td1.text();
-                String val = td2.text();
-
-                //retList.add(str1+"==>" + val);
+            for(int i=0;i<links.size();i++){
+                //Element td1 = tds.get(i+1);
+                Element link1 = links.get(i);
+                String linkhref = link1.attr("href");
+                Log.i(TAG,"run:"+ link1.text() + "==>" + linkhref);
+                String str1 = link1.text();
+                String http = linkhref;
                 HashMap<String,String> map = new HashMap<String, String>();
+
                 map.put("ItemTitle",str1);
-                map.put("ItemDetail",val);
+                map.put("ItemDetail",http);
                 retList.add(map);
 
             }
@@ -132,10 +135,10 @@ public class MyList2Activity extends ListActivity implements Runnable,AdapterVie
         String detailStr = map.get("ItemDetail");
 
         //打开新的页面传入参数
-        Intent rateCalc = new Intent(this,RateCalcActivity.class);
-        rateCalc.putExtra("title",titleStr);
-        rateCalc.putExtra("rate",Float.parseFloat(detailStr));
-        startActivity(rateCalc);
+        Intent xueyDetail = new Intent(this,XueyActivity.class);
+        xueyDetail.putExtra("title",titleStr);
+        xueyDetail.putExtra("http",detailStr);
+        startActivity(xueyDetail);
 
 
     }

@@ -20,27 +20,26 @@
         <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
         <!-- </intent-filter> -->
         <!-- </activity> -->
-        <activity android:name=".Week_6" />
-        <activity android:name=".Week_5" />
         <activity android:name=".Score" />
         <activity android:name=".Config" />
-        <activity android:name=".Rateconverter">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".Rateconverter" />
         <activity android:name=".RateListActivity" />
-        <activity android:name=".MyListActivity" >
+        <activity android:name=".MyListActivity" />
+        <activity android:name=".MyList2Activity" />
+        <activity android:name=".XueyListActivity" />
+        <activity
+            android:name=".RateCalcActivity"
+            android:theme="@style/Base.Theme.AppCompat.Light.Dialog" />
+        <activity android:name=".FrameActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MyList2Activity" />
-        <activity android:name=".RateCalcActivity" android:theme="@style/Base.Theme.AppCompat.Light.Dialog"></activity>
+        <activity android:name=".XueyActivity" />
+        <activity android:name=".PicsActivity">
+        </activity>
     </application>
 
 </manifest>

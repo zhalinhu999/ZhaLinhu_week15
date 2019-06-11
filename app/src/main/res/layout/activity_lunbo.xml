@@ -1,0 +1,41 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager_vp"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp" />
+    <!-- 定义lineatLayout时,background="#88000000",gravity="center_horizontal" padding="8dp"
+      android:layout_alignBottom="@+id/viewpager_vp" 小点用一个LinearLayout来包裹.-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#88000000"
+        android:gravity="center_horizontal"
+        android:padding="8dp"
+        android:layout_alignBottom="@+id/viewpager_vp"
+        android:orientation="vertical">
+        <!--此处状态选择器的选择属性是state_selected,而不是state_pressed,
+         要知道他们的区别,引用图片drawable,注意V是大写,
+         点是根据图片的张数,动态创建的,所有我们的View还要注释掉.-->text
+        <TextView
+            android:id="@+id/viewpager_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:text="我是帅哥"/>
+
+        <LinearLayout
+            android:id="@+id/ll_dots"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+            <!--   <View
+                android:layout_width="5dp"
+                android:layout_height="5dp"
+                android:background="@drawable/dot_focus"/>-->
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
